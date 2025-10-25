@@ -1,11 +1,17 @@
+#include mainlogic.lua
+#include junglecheeta.lua
+#include emplastro.lua
+
 function _init()
-	
-	end
+	init_emplastro()
+end
 
 function _update()
-	
-	end
+	update_phase_timer()
+	update_emplastro()
+end
 
 function _draw()
-	cls(2)
-	end
+	draw_emplastro()
+	draw_phase_timer()
+end
