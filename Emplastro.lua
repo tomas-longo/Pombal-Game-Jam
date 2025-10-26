@@ -54,6 +54,9 @@ end
 function update_emplastro()
 	cam.x = 0
 	cam.y = 0
+
+	game_time_variation = 0
+
 	for board in all(boards) do
 		if (board.y > maxy) then
 			board.dir = -1

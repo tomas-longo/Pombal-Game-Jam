@@ -4,6 +4,8 @@ __lua__
 #include mainlogic.lua
 #include junglecheeta.lua
 #include emplastro.lua
+#include indypuzzle.lua
+#include corrida.lua
 
 function _init()
 	init_timer()
@@ -21,7 +23,9 @@ function _draw()
 	draw_cheeta()
 	draw_tv()
 	draw_phase_timer()
+	draw_end_screen()
 end
+
 __gfx__
 0000000055555555cccccccc00000000000000000000000000000000000000000000000000000000000000000000000000000000656565656565656500000000
 0000000055555555cccccccc00000000888888880000000000000000000000000000000000000000000000000000000000000000656565656565656500000000

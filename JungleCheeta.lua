@@ -17,6 +17,11 @@ function cheeta_start()
 end
 
 function update_cheeta()
+	cam.x = 0
+	cam.y = 128
+
+	game_time_variation = 0
+	
 	if (game_won) then
 		cameraspeed *= .95
 		cheetachar.vel *= .96
