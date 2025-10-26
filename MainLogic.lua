@@ -11,9 +11,9 @@ frame_time_decrease = 0.033333333333333
 --sound
 time_left = global_max_time
 -- base delay (in seconds) between sound plays
-base_delay = .3
+base_delay = .5
 -- how fast it can go at the end
-min_delay = 0.02
+min_delay = 0.1
 -- track when to play next
 next_beep = 0
 

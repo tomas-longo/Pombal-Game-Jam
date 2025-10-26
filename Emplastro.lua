@@ -9,6 +9,7 @@ reporterframetime = 0.1
 emplastroprogress = 0
 emplastroprogressspeed = 0.005
 airplane = {x,y,v = 0.1}
+win_emplastro = false
 
 function make_board(k, x, y, w, h, dir, text)
 	a={
@@ -44,6 +45,11 @@ function init_emplastro()
 	make_board(0, 42, 50, 15, 7, 1, "fim fmi")
 	--make_board(1, 70, 70, 20, 10, -1, "no bitches")
 	make_board(2, 23, 70, 10, 5, 1, "😐⌂")
+	emplastro_start()
+end
+
+function emplastro_start()
+	music(1)
 end
 
 function update_emplastro()
@@ -97,7 +103,10 @@ function update_emplastro()
 	if (emplastrocharacter.x > reportercharacter.x + 16 or emplastrocharacter.x < reportercharacter.x - 16) then
 		emplastroprogress += emplastroprogressspeed
 	end
-	if (emplastroprogress >= 1) then emplastroprogress = 1 WIN=true end
+	if (emplastroprogress >= 1) then
+		emplastroprogress = 1 
+		win_emplastro=true 
+	end
 		
 end
 
@@ -105,19 +114,32 @@ function draw_emplastro()
 	cls(10)
 	camera(cam.x, cam.y)
 	map()
-	drawboards()
 	spr(18, airplane.x, airplane.y, 2, 2)
-	spr(32,
-		emplastrocharacter.x, emplastrocharacter.y, -- x,y (pixels)
-		2,2,
-		emplastrocharacter.d==-1 
-	)
-	spr(5 + flr(reportercharacter.f) * 4,
-		reportercharacter.x, reportercharacter.y,
-		4,4,
-		reportercharacter.d==-1
-	)
-	rectfill(cam.x + 24, cam.y + 13, cam.x + 101, cam.y + 16, 1)
-	rectfill(cam.x + 25, cam.y + 14, cam.x + 25 + emplastroprogress * (100-25), cam.y + 15, 11)
-	print("⬅️ and ➡️ to move", cam.x + 30, cam.y + 18, 1)
+
+	if not win_emplastro then
+		drawboards()
+		spr(32,
+			emplastrocharacter.x, emplastrocharacter.y, -- x,y (pixels)
+			2,2,
+			emplastrocharacter.d==-1)
+
+		spr(5 + flr(reportercharacter.f) * 4,
+			reportercharacter.x, reportercharacter.y,
+			4,4,
+			reportercharacter.d==-1)
+		
+		rectfill(cam.x + 24, cam.y + 13, cam.x + 101, cam.y + 16, 1)
+		rectfill(cam.x + 25, cam.y + 14, cam.x + 25 + emplastroprogress * (100-25), cam.y + 15, 11)
+		print("⬅️ and ➡️ to move", cam.x + 30, cam.y + 18, 1)
+	end
+	
+	if win_emplastro then
+		spr(32,
+			emplastrocharacter.x, emplastrocharacter.y, -- x,y (pixels)
+			2,2,
+			emplastrocharacter.d==-1)
+		print("emplastro on live tv", cam.x + 20, cam.y + 18, 1)
+	end
+	
+
 end
