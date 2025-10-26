@@ -5,6 +5,7 @@ cameraspeed = 0
 cameraac = 0
 maploc={x=0,y=0}
 game_won = false
+button_down = false
 function init_cheeta()
 	cam.x = 0
 	cam.y = 128
@@ -12,17 +13,25 @@ function init_cheeta()
 end
 
 function cheeta_start()
-	music(0)
+	music(3)
 end
 
 function update_cheeta()
 	if (game_won) then
 		cameraspeed *= .95
-		cheetachar.vel *= .97
+		cheetachar.vel *= .96
 	else
 		cheetachar.vel += ac
-		if (btnp(➡️)) then
-			cameraspeed += 0.28
+
+		if (not button_down) then
+			if (btn(1)) then
+				button_down = true
+				cameraspeed += 0.2
+			end
+		else
+			if (not btn(1)) then
+				button_down = false
+			end
 		end
 	end
 	-- move (add velocity)

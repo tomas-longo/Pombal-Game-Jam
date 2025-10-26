@@ -45,7 +45,6 @@ function init_emplastro()
 	make_board(0, 42, 50, 15, 7, 1, "fim fmi")
 	--make_board(1, 70, 70, 20, 10, -1, "no bitches")
 	make_board(2, 23, 70, 10, 5, 1, "😐⌂")
-	emplastro_start()
 end
 
 function emplastro_start()

@@ -14,6 +14,7 @@ min_delay = 0.1
 -- track when to play next
 next_beep = 0
 
+button_down_main = {false, false, false, false, false, false}
 function init_timer()
 	next_beep = time()
 end
@@ -42,6 +43,20 @@ function draw_phase_timer()
 	rectfill(cam.x + 14, cam.y + 4, cam.x + 14 + (phase_time / global_max_time) * 100, cam.y + 6, 7)
 end
 
+function button_press_check()
+	for i=0, 5 do
+		if button_down_main[i + 1] == false then
+			if (btn(i)) then
+				button_down_main[i + 1] = true
+				sfx(40)
+			end
+		else
+			if (not btn(i)) then
+				button_down_main[i + 1] = false
+			end
+		end
+	end
+end
 function draw_tv()
 	--corners
 	spr(128, cam.x, cam.y, 2,2)
