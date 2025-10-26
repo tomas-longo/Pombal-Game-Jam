@@ -1,5 +1,5 @@
 
-function _init_corrida()
+function init_corrida()
 	cam.x =111*8
 	cam.y =01*8
 	finish=	{x= cam.x+100,y=cam.y+60}
@@ -24,7 +24,12 @@ function delay_corrida(t)
 	end
 end
 
-function _update_corrida()
+function update_corrida()
+	cam.x =111*8
+	cam.y =01*8
+
+	game_time_variation = 0
+
 	if n==240 then
 		if btn(➡️) then
 			if pointer.x>=cam.x+45 then
@@ -79,7 +84,7 @@ speed=0
 win=true
 end
 
-function _draw_corrida()
+function draw_corrida()
 	cls()
 	camera(cam.x,cam.y)
 	map()

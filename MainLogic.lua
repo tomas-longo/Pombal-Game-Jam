@@ -2,7 +2,7 @@
 cam = { x = 0, y = 0 }
 
 --timer
-global_max_time = 1.0
+global_max_time = 5.0
 current_max_time = 0
 game_time_variation = 0
 phase_time = 0
@@ -18,7 +18,7 @@ min_delay = 0.1
 next_beep = 0
 
 current_channel_index = 0
-channel_number = 3
+channel_number = 4
 
 -- TODO: be sure to assign one in each game's code
 game1_completed = false

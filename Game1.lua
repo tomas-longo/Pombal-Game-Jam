@@ -6,7 +6,7 @@
 
 function _init()
 	init_timer()
-	--init_corrida()
+	init_corrida()
 	init_emplastro()
 	init_cheeta()
 	init_indy()
@@ -20,7 +20,7 @@ function _update()
 	elseif current_channel_index == 2 then
 		update_emplastro()
 	elseif current_channel_index == 3 then
-		--update_corrida()
+		update_corrida()
 	end
 
 	update_phase_timer()
@@ -34,7 +34,7 @@ function _draw()
 	elseif current_channel_index == 2 then
 		draw_emplastro()
 	elseif current_channel_index == 3 then
-		--draw_corrida()
+		draw_corrida()
 	end
 	
 	draw_tv()

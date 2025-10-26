@@ -4,22 +4,47 @@ __lua__
 #include mainlogic.lua
 #include junglecheeta.lua
 #include emplastro.lua
+#include indypuzzle.lua
+#include corrida.lua
 
 function _init()
 	init_timer()
+	--init_corrida()
 	init_emplastro()
+	init_cheeta()
+	init_indy()
 end
 
 function _update()
+	if current_channel_index == 0 then
+		update_indy()
+	elseif current_channel_index == 1 then
+		update_cheeta()
+	elseif current_channel_index == 2 then
+		update_emplastro()
+	elseif current_channel_index == 3 then
+		--update_corrida()
+	end
+
 	update_phase_timer()
-	update_emplastro()
 end
 
 function _draw()
-	draw_emplastro()
+	if current_channel_index == 0 then
+		draw_indy()
+	elseif current_channel_index == 1 then
+		draw_cheeta()
+	elseif current_channel_index == 2 then
+		draw_emplastro()
+	elseif current_channel_index == 3 then
+		--draw_corrida()
+	end
+	
 	draw_tv()
 	draw_phase_timer()
+	draw_end_screen()
 end
+
 __gfx__
 0000000055555555cccccccc00000000000000000000000000000000000000000000000000000000000000000000000000000000656565656565656500000000
 0000000055555555cccccccc00000000888888880000000000000000000000000000000000000000000000000000000000000000656565656565656500000000
