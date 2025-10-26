@@ -8,9 +8,9 @@ phase_time = 0
 frame_time_decrease = 0.033333333333333
 time_left = global_max_time
 -- base delay (in seconds) between sound plays
-base_delay = .3
+base_delay = .5
 -- how fast it can go at the end
-min_delay = 0.02
+min_delay = 0.1
 -- track when to play next
 next_beep = 0
 
@@ -41,7 +41,7 @@ function draw_phase_timer()
 	rectfill(cam.x + 13, cam.y + 3, cam.x + 115, cam.y + 7, 1)
 	rectfill(cam.x + 14, cam.y + 4, cam.x + 14 + (phase_time / global_max_time) * 100, cam.y + 6, 7)
 end
-	
+
 function draw_tv()
 	--corners
 	spr(128, cam.x, cam.y, 2,2)

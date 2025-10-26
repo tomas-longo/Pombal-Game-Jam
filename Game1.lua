@@ -4,16 +4,16 @@
 
 function _init()
 	init_timer()
-	init_cheeta()
+	init_emplastro()
 end
 
 function _update()
 	update_phase_timer()
-	update_cheeta()
+	update_emplastro()
 end
 
 function _draw()
-	draw_cheeta()
+	draw_emplastro()
 	draw_tv()
 	draw_phase_timer()
 end
