@@ -1,16 +1,21 @@
-#include game1.lua
+
 function _init_corrida()
-	finish=	{x=100,y=80}
-	pointer={x=7,y=92}
-	point_a={x=7,y=92}
-	point_b={x=95,y=92}
-	player={x=30,y=80}
-	key={x=50,y=110}
+	cam.x =111*8
+	cam.y =01*8
+	finish=	{x= cam.x+100,y=cam.y+60}
+	pointer={x = cam.x+7,y = cam.y+92}
+	point_a={x=cam.x+7,y=cam.y+92}
+	point_b={x=cam.x+95,y=cam.y+92}
+	player={x=cam.x+30,y=cam.y+70}
+	key={x=cam.x+50,y=cam.y+110}
 	moving_b=true
-	ab={2,3}
+	ab={240,241}
 	speed=6
-	n=2
+	n=240
 	win=false
+	frame_a=192
+	frame_b=194
+	current_frame = frame_a
 end
 
 function delay_corrida(t)
@@ -20,27 +25,38 @@ function delay_corrida(t)
 end
 
 function _update_corrida()
-		if n==2 then
-			if btn(➡️) then
-				if pointer.x>=45 then
-					if pointer.x<=65 then
-							finish.x -=1
-							n=rnd(ab)
-							delay(2)
-					end
+	if n==240 then
+		if btn(➡️) then
+			if pointer.x>=cam.x+45 then
+				if pointer.x<=cam.x+65 then
+						finish.x -=2
+						n=rnd(ab)
+						delay_corrida(2)
+						if current_frame == frame_a then
+							current_frame = frame_b
+						else
+							current_frame = frame_a
+						end
 				end
 			end
-			else	
-				if btn(⬅️) then
-				if pointer.x>=45 then
-					if pointer.x<=65 then
-							finish.x -=1
-							n=rnd(ab)
-							delay(2)
-					end
+		end
+		else	
+			if btn(⬅️) then
+			if pointer.x>=cam.x+45 then
+				if pointer.x<=cam.x+65 then
+						finish.x -=2
+						n=rnd(ab)
+						delay_corrida(2)
+						if current_frame == frame_a then
+							current_frame = frame_b
+						else
+							current_frame = frame_a
+						end
 				end
 			end
-		end	
+		end
+	end	
+
 	if moving_b then
 		pointer.x += speed
 		if pointer.x >= point_b.x then
@@ -51,10 +67,11 @@ function _update_corrida()
 		if pointer.x<= point_a.x then
 			moving_b = true
 		end
-end
-if finish.x<=player.x then
-winstate()
-end
+	end
+
+	if finish.x-15<=player.x then
+	winstate_corrida()
+	end
 end
 
 function winstate_corrida()
@@ -64,14 +81,15 @@ end
 
 function _draw_corrida()
 	cls()
+	camera(cam.x,cam.y)
 	map()
-	spr(0,finish.x, 80)
-	spr(5,pointer.x,pointer.y)
-	spr(n, key.x, key.y)
-	spr(4,player.x, player.y)
-	rectfill(100,100,10,100,6)
-	rectfill(65,100,45,100,2)
+	spr(237,finish.x-15, 75,2,2)
+	spr(224,pointer.x,pointer.y-3)
+	spr(n, key.x+6, key.y-8)
+	spr(current_frame,player.x, player.y,2,2)
+	rectfill(cam.x+100,cam.y+98,cam.x+20,cam.y+98,6)
+	rectfill(cam.x+50,cam.y+98,cam.x+70,cam.y+98,2)
 	if win==true then
-		spr(6,20,20,2,2)	
+		spr(226,cam.x+20,cam.y+20,2,2)	
 	end
 end
