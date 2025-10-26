@@ -1,13 +1,14 @@
 
 boards = {}
 boardvelocity = 1
-maxy = 100
-miny = 70
+maxy = 85
+miny = 60
 emplastroac = 0.3 -- acceleration
 reporterac = 0.4
 reporterframetime = 0.1
 emplastroprogress = 0
 emplastroprogressspeed = 0.005
+airplane = {x,y,v = 0.1}
 
 function make_board(k, x, y, w, h, dir, text)
 	a={
@@ -26,7 +27,7 @@ end
 
 function drawboards()
 	for board in all(boards) do
-		rectfill(cam.x + board.x - 1, cam.y + board.y + board.h, cam.x + board.x + 1, cam.y + board.y + 128, 4)
+		rectfill(cam.x + board.x - 1, cam.y + board.y + board.h, cam.x + board.x + 1, cam.y + 95, 4)
 		rectfill(cam.x + board.x - board.w, cam.y + board.y - board.h, cam.x + board.x + board.w, cam.y + board.y + board.h, 4)
 		print(board.text, cam.x + board.x - board.w + 1, cam.y + board.y, 7)
 	end
@@ -34,16 +35,20 @@ end
 
 function init_emplastro()
 	cam.x = 0
-	cam.y = 128
-	emplastrocharacter = { x = cam.x + 64,y = cam.y + 100, vx=0, vy=0, f = 1, d = 1}
-	reportercharacter = { x = cam.x,y = cam.y + 80, vx=0, vy=0, f = 1, d = 1}
+	cam.y = 0
+	airplane.x = cam.x
+	airplane.y = cam.y + 30
+	emplastrocharacter = { x = cam.x + 64,y = cam.y + 80, vx=0, vy=0, f = 1, d = 1}
+	reportercharacter = { x = cam.x,y = cam.y + 64, vx=0, vy=0, f = 1, d = 1}
 	
-	make_board(0, 50, 50, 15, 7, 1, "caralho")
+	make_board(0, 42, 50, 15, 7, 1, "fim fmi")
 	--make_board(1, 70, 70, 20, 10, -1, "no bitches")
-	make_board(2, 100, 50, 10, 5, 1, "😐⌂")
+	make_board(2, 23, 70, 10, 5, 1, "😐⌂")
 end
 
 function update_emplastro()
+	cam.x = 0
+	cam.y = 0
 	for board in all(boards) do
 		if (board.y > maxy) then
 			board.dir = -1
@@ -53,7 +58,8 @@ function update_emplastro()
 			end
 		board.y += (boardvelocity * board.dir)
 	end
-
+	--airplane
+	airplane.x += airplane.v
 	--emplastro-----
 	if (btn(0)) then
 		emplastrocharacter.vx-= emplastroac
@@ -69,8 +75,8 @@ function update_emplastro()
 	-- friction (lower for more)
 	emplastrocharacter.vx *=.9
 	
-	if (emplastrocharacter.x < cam.x) then emplastrocharacter.x = cam.x end
-	if (emplastrocharacter.x > cam.x + 112) then emplastrocharacter.x =  cam.x + 112  end
+	if (emplastrocharacter.x < cam.x + 16) then emplastrocharacter.x = cam.x  + 16 end
+	if (emplastrocharacter.x > cam.x + 96) then emplastrocharacter.x =  cam.x + 96  end
 	
 	--reporter
 	if (reportercharacter.x + 8 > emplastrocharacter.x) then
@@ -97,19 +103,18 @@ function draw_emplastro()
 	camera(cam.x, cam.y)
 	map()
 	drawboards()
-	--change sprite as needed
-	spr(128,
+	spr(18, airplane.x, airplane.y, 2, 2)
+	spr(32,
 		emplastrocharacter.x, emplastrocharacter.y, -- x,y (pixels)
 		2,2,
 		emplastrocharacter.d==-1 
 	)
-	spr(130 + flr(reportercharacter.f) * 4,
+	spr(5 + flr(reportercharacter.f) * 4,
 		reportercharacter.x, reportercharacter.y,
 		4,4,
 		reportercharacter.d==-1
 	)
-	rectfill(cam.x + 25, cam.y + 13, cam.x + 100, cam.y + 14, 1)
-	rectfill(cam.x + 25, cam.y + 13, cam.x + 25 + emplastroprogress * (100-25), cam.y + 14, 11)
-	print("⬅️ and ➡️ to move", cam.x + 30, cam.y + 16, 1)
-	print(emplastroprogress)
+	rectfill(cam.x + 24, cam.y + 13, cam.x + 101, cam.y + 16, 1)
+	rectfill(cam.x + 25, cam.y + 14, cam.x + 25 + emplastroprogress * (100-25), cam.y + 15, 11)
+	print("⬅️ and ➡️ to move", cam.x + 30, cam.y + 18, 1)
 end
