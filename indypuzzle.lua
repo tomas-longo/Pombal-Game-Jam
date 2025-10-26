@@ -109,8 +109,8 @@ function init_indy()
 		for y = 1, piece_grid_side do
 			-- a random integer between [0 and 3]
 			-- pray that it doesnt turn out to be all 0s
-			puzzle_flip_state[x][y] = flr(rnd(4))
-			--puzzle_flip_state[x][y] = 0
+			--puzzle_flip_state[x][y] = flr(rnd(4))
+			puzzle_flip_state[x][y] = 0
 		end
 	end
 end
@@ -119,7 +119,7 @@ function update_indy()
 	cam.x = cam_pos_puzzle_x
 	cam.y = cam_pos_puzzle_y
 
-	game_time_variation = 0
+	game_time_variation = 5
 
 	if btnp(⬅️) then
 		x_selection = mid(x_selection - 1, piece_grid_side - 1)
@@ -204,7 +204,12 @@ function draw_indy()
 	spr(indy_sprites[flr(indy_anim_index)], indy_location_x, indy_location_y)
 
 
-	print("complete picture.", cam.x + 30, cam.y + 20, 0)
-	print("flip tiles with 🅾️ and ❎", cam.x + 15, cam.y + 30, 0)
+	if  puzzle_completed then
+		print("door opened!", cam.x + 30, cam.y + 20, 0)
+	else
+		print("complete picture.", cam.x + 30, cam.y + 20, 0)
+		print("flip tiles with 🅾️ and ❎", cam.x + 15, cam.y + 30, 0)
+	end
+	
 
 end

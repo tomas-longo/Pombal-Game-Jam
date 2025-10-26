@@ -29,6 +29,8 @@ game4_completed = false
 
 end_game = false
 
+time_when_game_changes = 0
+
 function increment_channel()
 	current_channel_index = current_channel_index + 1
 	if current_channel_index >= channel_number then
@@ -40,6 +42,9 @@ function increment_channel()
 			end_game = true
 		end
 	end
+	if current_channel_index == 1 then cheeta_start() end
+
+	music(current_channel_index)
 end
 
 function init_timer()
@@ -55,11 +60,13 @@ function update_phase_timer()
 	-- on end game timer
 	if (phase_time >= current_max_time) then
 		phase_time = 0
+		next_beep = 0
+		time_when_game_changes = time()
 		increment_channel()
 	end
 
 	-- sound beep logic
-	local t = time()
+	local t = time() - time_when_game_changes
 	time_left = max(0, current_max_time - t)
 
 	local progress = 1 - (time_left / current_max_time)

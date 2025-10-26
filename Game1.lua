@@ -10,6 +10,7 @@ function _init()
 	init_emplastro()
 	init_cheeta()
 	init_indy()
+	music(0)
 end
 
 function _update()

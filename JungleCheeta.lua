@@ -6,6 +6,7 @@ cameraac = 0
 maploc={x=0,y=0}
 game_won = false
 button_down = false
+
 function init_cheeta()
 	cam.x = 0
 	cam.y = 128
@@ -13,13 +14,13 @@ function init_cheeta()
 end
 
 function cheeta_start()
+	cam.x = 0
+	cam.y = 128
+	cheetachar.posx = cam.x + 20
 	music(3)
 end
 
 function update_cheeta()
-	cam.x = 0
-	cam.y = 128
-
 	game_time_variation = 0
 	
 	if (game_won) then
@@ -31,7 +32,7 @@ function update_cheeta()
 		if (not button_down) then
 			if (btn(1)) then
 				button_down = true
-				cameraspeed += 0.2
+				cameraspeed += 0.22
 			end
 		else
 			if (not btn(1)) then
@@ -58,6 +59,7 @@ function update_cheeta()
 	
 	if cheetachar.posx < cam.x then
 		game_won = true
+		game2_completed = true
 	end
 end
 

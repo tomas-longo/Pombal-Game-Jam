@@ -9,9 +9,9 @@ function init_corrida()
 	player={x=cam.x+30,y=cam.y+70}
 	key={x=cam.x+50,y=cam.y+110}
 	moving_b=true
-	ab={240,241}
+	ab={"⬅️","➡️"}
 	speed=6
-	n=240
+	n="⬅️"
 	win=false
 	frame_a=192
 	frame_b=194
@@ -30,7 +30,7 @@ function update_corrida()
 
 	game_time_variation = 0
 
-	if n==240 then
+	if n=="➡️" then
 		if btn(➡️) then
 			if pointer.x>=cam.x+45 then
 				if pointer.x<=cam.x+65 then
@@ -69,7 +69,7 @@ function update_corrida()
 		end
 	else
 		pointer.x -= speed
-		if pointer.x<= point_a.x then
+		if pointer.x<= point_a.x + 16 then
 			moving_b = true
 		end
 	end
@@ -82,6 +82,7 @@ end
 function winstate_corrida()
 speed=0
 win=true
+game4_completed = true
 end
 
 function draw_corrida()
@@ -90,7 +91,7 @@ function draw_corrida()
 	map()
 	spr(237,finish.x-15, 75,2,2)
 	spr(224,pointer.x,pointer.y-3)
-	spr(n, key.x+6, key.y-8)
+	print(n, key.x+6, key.y-8)
 	spr(current_frame,player.x, player.y,2,2)
 	rectfill(cam.x+100,cam.y+98,cam.x+20,cam.y+98,6)
 	rectfill(cam.x+50,cam.y+98,cam.x+70,cam.y+98,2)

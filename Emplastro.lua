@@ -105,6 +105,7 @@ function update_emplastro()
 	if (emplastroprogress >= 1) then
 		emplastroprogress = 1 
 		win_emplastro=true 
+		game3_completed = true
 	end
 		
 end
