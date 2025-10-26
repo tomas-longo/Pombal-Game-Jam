@@ -40,6 +40,7 @@ function check_puzzle_win_state()
 		end
 	end
 
+	game1_completed = true
 	return true
 end
 
@@ -108,13 +109,18 @@ function init_indy()
 		for y = 1, piece_grid_side do
 			-- a random integer between [0 and 3]
 			-- pray that it doesnt turn out to be all 0s
-			--puzzle_flip_state[x][y] = flr(rnd(4))
-			puzzle_flip_state[x][y] = 0
+			puzzle_flip_state[x][y] = flr(rnd(4))
+			--puzzle_flip_state[x][y] = 0
 		end
 	end
 end
 
 function update_indy()
+	cam.x = cam_pos_puzzle_x
+	cam.y = cam_pos_puzzle_y
+
+	game_time_variation = 0
+
 	if btnp(⬅️) then
 		x_selection = mid(x_selection - 1, piece_grid_side - 1)
 	end

@@ -12,6 +12,11 @@ function init_cheeta()
 end
 
 function update_cheeta()
+	cam.x = 0
+	cam.y = 128
+
+	game_time_variation = 0
+
 	cheetachar.vel += ac
 	if (btnp(➡️)) then
 		cameraac += 0.003
