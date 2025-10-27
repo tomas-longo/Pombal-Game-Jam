@@ -17,11 +17,11 @@ function _update()
 	button_press_check()
 
 	if current_channel_index == 0 then
-		update_indy()
+		update_emplastro()
 	elseif current_channel_index == 1 then
 		update_cheeta()
 	elseif current_channel_index == 2 then
-		update_emplastro()
+		update_indy()
 	elseif current_channel_index == 3 then
 		update_corrida()
 	end
@@ -31,11 +31,11 @@ end
 
 function _draw()
 	if current_channel_index == 0 then
-		draw_indy()
+		draw_emplastro()
 	elseif current_channel_index == 1 then
 		draw_cheeta()
 	elseif current_channel_index == 2 then
-		draw_emplastro()
+		draw_indy()
 	elseif current_channel_index == 3 then
 		draw_corrida()
 	end

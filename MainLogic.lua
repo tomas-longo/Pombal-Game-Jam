@@ -2,7 +2,7 @@
 cam = { x = 0, y = 0 }
 
 --timer
-global_max_time = 5.0
+global_max_time = 6.0
 current_max_time = 0
 game_time_variation = 0
 phase_time = 0

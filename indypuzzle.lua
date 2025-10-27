@@ -109,8 +109,8 @@ function init_indy()
 		for y = 1, piece_grid_side do
 			-- a random integer between [0 and 3]
 			-- pray that it doesnt turn out to be all 0s
-			--puzzle_flip_state[x][y] = flr(rnd(4))
-			puzzle_flip_state[x][y] = 0
+			puzzle_flip_state[x][y] = flr(rnd(4))
+			--puzzle_flip_state[x][y] = 0
 		end
 	end
 end

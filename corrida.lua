@@ -19,9 +19,9 @@ function init_corrida()
 end
 
 function delay_corrida(t)
-	for x=1, t do
+--[[ 	for x=1, t do
 		yield()
-	end
+	end ]]
 end
 
 function update_corrida()
