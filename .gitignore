@@ -39,3 +39,10 @@ luac.out
 *.x86_64
 *.hex
 
+# VSCode-specific ignores
+.vscode/
+*.code-workspace
+.history/
+
+# Jetbrains IDE-specific files
+.idea/
