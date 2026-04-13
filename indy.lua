@@ -115,11 +115,14 @@ function init_indy()
 	end
 end
 
-function update_indy()
+function on_indy_increment()
 	cam.x = cam_pos_puzzle_x
 	cam.y = cam_pos_puzzle_y
 
 	game_time_variation = 5
+end
+
+function update_indy()
 
 	if btnp(⬅️) then
 		x_selection = mid(x_selection - 1, piece_grid_side - 1)

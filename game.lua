@@ -1,19 +1,23 @@
-#include mainlogic.lua
-#include junglecheeta.lua
-#include emplastro.lua
-#include indypuzzle.lua
-#include corrida.lua
+#include main_logic.lua
+#include implastro.lua
+#include cheeta.lua
+#include indy.lua
+#include runner.lua
 
 function _init()
-	init_timer()
-	init_corrida()
 	init_emplastro()
 	init_cheeta()
 	init_indy()
-	music(0)
+	init_corrida()
+
+	on_channel_update()
 end
 
 function _update()
+	if update_end_screen() then
+		return
+	end
+
 	button_press_check()
 
 	if current_channel_index == 0 then
@@ -30,6 +34,10 @@ function _update()
 end
 
 function _draw()
+	if draw_end_screen() then
+		return
+	end
+
 	if current_channel_index == 0 then
 		draw_emplastro()
 	elseif current_channel_index == 1 then
@@ -42,5 +50,4 @@ function _draw()
 
 	draw_tv()
 	draw_phase_timer()
-	draw_end_screen()
 end
