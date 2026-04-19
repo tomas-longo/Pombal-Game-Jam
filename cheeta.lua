@@ -1,36 +1,42 @@
-playingCheeta = true
-ac = 0.04 -- acceleration
-cameraspeed = 0
-cameraac = 0
-maploc = { x = 0, y = 0 }
-game_won = false
+camera_speed = 0
+cheeta_char = { posx = 0, posy = 0, vel = 0, frame = 0, timer = 0, animspeed = 0 }
+
+cheeta_initial_mltplr = 10
+cheeta_mltplr = 0
+
+cam_cache = 0
+
 button_down = false
+game_won = false
 
 function init_cheeta()
-	cam.x = 0
-	cam.y = 128
-	cheetachar = { posx = cam.x + 20, posy = cam.y + 70, vel = 0, dir = 1, frame = 0, timer = 0, framespeed = 0.2 }
+	cheeta_mltplr = cheeta_initial_mltplr
+	cheeta_char = { posx = 0 + 20, posy = 128 + 70, vel = 0, frame = 0, timer = 0, animspeed = 0.07 }
 end
 
 function on_cheeta_increment()
-	cam.x = 0
+	cam.x = cam_cache
 	cam.y = 128
-	cheetachar.posx = cam.x + 20
+	game_time_variation = 0
 end
 
 function update_cheeta()
-	game_time_variation = 0
-
 	if game_won then
-		cameraspeed *= .95
-		cheetachar.vel *= .96
+		camera_speed *= .95
+		cheeta_char.vel *= .96
 	else
-		cheetachar.vel += ac
+		cheeta_char.vel += 0.04
+
+		-- make the input less effective during the initial moments
+		cheeta_mltplr = max(0, cheeta_mltplr * 0.98)
 
 		if not button_down then
 			if btn(1) then
 				button_down = true
-				cameraspeed += 0.22
+
+				-- goes from 0 to 1
+				local input_mltplr = (1 - (cheeta_mltplr / cheeta_initial_mltplr))
+				camera_speed += (0.22 * input_mltplr) 
 			end
 		else
 			if not btn(1) then
@@ -38,45 +44,54 @@ function update_cheeta()
 			end
 		end
 	end
+
 	-- move (add velocity)
-	cam.x += cameraspeed
-	cheetachar.posx += cheetachar.vel
+	cam.x += camera_speed
+	cheeta_char.posx += cheeta_char.vel
 
-	cheetachar.timer += cheetachar.vel * cheetachar.framespeed
-	if (cheetachar.vel < 0.1) then
-		cheetachar.frame = 4
-	elseif cheetachar.timer >= 1 then
-		cheetachar.timer = 0
-		cheetachar.frame = (cheetachar.frame + 2) % 4
+	-- cheeta animation
+	cheeta_char.timer += cheeta_char.vel * cheeta_char.animspeed
+	if (cheeta_char.vel < 0.07) then
+		cheeta_char.frame = 4
+	elseif cheeta_char.timer >= 1 then
+		cheeta_char.timer = 0
+		cheeta_char.frame = (cheeta_char.frame + 2) % 4
 	end
 
+	-- cam loop around
 	if (cam.x >= 214) then
-		local dif = cam.x
+		cheeta_char.posx -= cam.x
 		cam.x = 0
-		cheetachar.posx -= dif
 	end
 
-	if cheetachar.posx < cam.x then
+	if cheeta_char.posx < cam.x and game_won == false then
 		game_won = true
 		game2_completed = true
 	end
+
+	cam_cache = cam.x
 end
 
 function draw_cheeta()
 	cls(4)
-	--change camera map position
 	camera(cam.x, cam.y)
-	-- draw the whole map
 	map()
-	-- draw the cheeta
+
+	-- draw sky
+	rectfill(cam.x, cam.y, cam.x + 128, cam.y + 50, 9)
+
+	-- draw sun
+	spr(113,cam.x + 95, cam.y + 22)
+
 	spr(
-		101 + cheetachar.frame, -- frame index
-		cheetachar.posx, cheetachar.posy, -- x,y (pixels)
-		2, 2, cheetachar.dir == 1 -- w,h, flip
+		101 + cheeta_char.frame, -- frame index
+		cheeta_char.posx, cheeta_char.posy, -- x,y
+		2, 2, true -- w,h, flip
 	)
+
 	if game_won then
 		print("fastest man alive!", cam.x + 25, cam.y + 30, 7)
 	else
-		print("smash ➡️", cam.x + 30, cam.y + 30, 7)
+		print("spam ➡️", cam.x + 30, cam.y + 30, 7)
 	end
 end

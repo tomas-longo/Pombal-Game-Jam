@@ -42,7 +42,7 @@ function draw_flame(sprite, anim_multiplier, flame_x, flame_y)
 	)
 end
 
-function drawboards()
+function draw_boards()
 	for board in all(boards) do
 		rectfill(cam.x + board.x - 1, cam.y + board.y + board.h, cam.x + board.x + 1, cam.y + 95, 4)
 		rectfill(cam.x + board.x - board.w, cam.y + board.y - board.h, cam.x + board.x + board.w, cam.y + board.y + board.h, 4)
@@ -131,7 +131,7 @@ function draw_emplastro()
 	spr(18, airplane.x, airplane.y, 2, 1)
 
 	if not win_emplastro then
-		drawboards()
+		draw_boards()
 
 		draw_flame(51, 1, 64, 24)
 		draw_flame(52, -1, 92, 24)
