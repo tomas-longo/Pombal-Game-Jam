@@ -1,15 +1,7 @@
--- stores first sprite of each row - 1
+-- stores first puzzle sprite of each row - 1
 puzzle_sprites = { 74, 90, 106, 122 }
 indy_sprites = { 65, 66 }
 indy_anim_index = 1
-
-indy_location_x = 40
-indy_location_y = 80
-
-piece_draw_offset = 9
-piece_size = 8
-piece_grid_side = 4
-inbetween_piece_distance = 0
 
 cam_pos_puzzle_x = 160
 cam_pos_puzzle_y = 0
@@ -17,19 +9,23 @@ cam_pos_puzzle_y = 0
 x_puzzle_offset = 70
 y_puzzle_offset = 48
 
--- 0-piece_grid_side grid coordinate that is currently selected
+is_random = false
+random_timer = 1
+
+piece_draw_offset = 9
+piece_size = 8
+-- side of the square
+piece_grid_side = 4
+inbetween_piece_distance = 0
+
+-- [0-piece_grid_side[ grid coordinate that is currently selected
 x_selection = 0
 y_selection = 0
 
--- 2D array.
--- Values: 0=NoFlipping, 1=HFlipping, 2=VFlipping, 3=BothFlipping
+-- 2d array.
+-- values: 0=NoFlipping, 1=HFlipping, 2=VFlipping, 3=BothFlipping
 puzzle_flip_state = {}
-
-bckgrnd_color = 14
-selection_color = 8
-
 puzzle_completed = false
-
 
 function check_puzzle_win_state()
 	for x = 1, piece_grid_side do
@@ -90,27 +86,29 @@ function handle_flip_input(flip_horizontal)
 	end
 end
 
-
-function init_indy()
-	cam.x = cam_pos_puzzle_x
-	cam.y = cam_pos_puzzle_y
-
-	x_puzzle_offset = cam_pos_puzzle_x + x_puzzle_offset
-	y_puzzle_offset = cam_pos_puzzle_y + y_puzzle_offset
-
-	indy_location_x = cam_pos_puzzle_x + indy_location_x
-	indy_location_y = cam_pos_puzzle_y + indy_location_y
-
-	inbetween_piece_distance = piece_draw_offset - piece_size
-
-	-- setup puzzle_flip_state
+function randomize_puzzle()
+	is_random = true
 	for x = 1, piece_grid_side do
 		puzzle_flip_state[x] = {}
 		for y = 1, piece_grid_side do
 			-- a random integer between [0 and 3]
 			-- pray that it doesnt turn out to be all 0s
 			puzzle_flip_state[x][y] = flr(rnd(4))
-			--puzzle_flip_state[x][y] = 0
+		end
+	end
+end
+
+function init_indy()
+	x_puzzle_offset += cam_pos_puzzle_x
+	y_puzzle_offset += cam_pos_puzzle_y
+
+	inbetween_piece_distance = piece_draw_offset - piece_size
+
+	-- setup puzzle to be randomized later
+	for x = 1, piece_grid_side do
+		puzzle_flip_state[x] = {}
+		for y = 1, piece_grid_side do
+			puzzle_flip_state[x][y] = 0
 		end
 	end
 end
@@ -119,10 +117,24 @@ function on_indy_increment()
 	cam.x = cam_pos_puzzle_x
 	cam.y = cam_pos_puzzle_y
 
+	camera(cam.x, cam.y)
+
 	game_time_variation = 5
 end
 
 function update_indy()
+	random_timer *= 0.8
+	if random_timer < 0.001 then
+		random_timer = 0
+		if not is_random then
+			randomize_puzzle()
+		end
+	end
+
+	-- early return while showing full puzzle
+	if not is_random then
+		return
+	end
 
 	if btnp(⬅️) then
 		x_selection = mid(x_selection - 1, piece_grid_side - 1)
@@ -156,12 +168,11 @@ function update_indy()
 end
 
 function draw_indy()
-	cls(bckgrnd_color)
-	camera(cam.x, cam.y)
+	cls(14)
 
 	-- door
 	if puzzle_completed == false then
-		rectfill(cam.x + 30, cam.y + 65, cam.x + 40, cam.x + 80, 0)	
+		rectfill(cam_pos_puzzle_x + 30, cam_pos_puzzle_y + 65, cam_pos_puzzle_x + 40, cam_pos_puzzle_y + 80, 0)
 	end
 
 	-- map
@@ -192,27 +203,24 @@ function draw_indy()
 	local selection_coord_y = y_puzzle_offset + y_selection * (piece_size + inbetween_piece_distance) - 1
 
 	local x_selection_size = selection_coord_x + piece_size + 1
-	local selection_size_coord_y = selection_coord_y + piece_size + 1
+	local y_selection_size = selection_coord_y + piece_size + 1
 
-	rect(selection_coord_x, selection_coord_y, x_selection_size, selection_size_coord_y, selection_color)
+	rect(selection_coord_x, selection_coord_y, x_selection_size, y_selection_size, 8)
 
 	-- draw indy
-	if  puzzle_completed then
+	if puzzle_completed then
 		if indy_anim_index > 2.9 then
 			indy_anim_index = 1
 		else
 			indy_anim_index = indy_anim_index + 0.1
 		end
 	end
-	spr(indy_sprites[flr(indy_anim_index)], indy_location_x, indy_location_y)
+	spr(indy_sprites[flr(indy_anim_index)], cam_pos_puzzle_x + 40, cam_pos_puzzle_y + 80)
 
-
-	if  puzzle_completed then
+	if puzzle_completed then
 		print("door opened!", cam.x + 30, cam.y + 20, 0)
 	else
 		print("complete picture.", cam.x + 30, cam.y + 20, 0)
 		print("flip tiles with 🅾️ and ❎", cam.x + 15, cam.y + 30, 0)
 	end
-	
-
 end
