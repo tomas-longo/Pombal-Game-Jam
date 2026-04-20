@@ -3,7 +3,7 @@ puzzle_sprites = { 74, 90, 106, 122 }
 indy_sprites = { 65, 66 }
 indy_anim_index = 1
 
-cam_pos_puzzle_x = 160
+cam_pos_puzzle_x = 128
 cam_pos_puzzle_y = 0
 
 x_puzzle_offset = 70
@@ -119,7 +119,11 @@ function on_indy_increment()
 
 	camera(cam.x, cam.y)
 
-	game_time_variation = 5
+	if puzzle_completed then
+		game_time_variation = 0
+	else
+		game_time_variation = 5
+	end
 end
 
 function update_indy()
