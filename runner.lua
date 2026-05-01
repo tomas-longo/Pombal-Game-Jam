@@ -24,6 +24,7 @@ pointer = { x = cam_runner_x + 27, y = cam_runner_y + 89 }
 runner = { x = cam_runner_x + 30, y = cam_runner_y + 70 }
 
 function check_runner_input(in_right)
+	-- wrong input stops pointer for 1 second
 	if input_right != in_right then
 		pointer_delay = 1
 		return

@@ -13,6 +13,12 @@ game_time_variation = 0
 phase_time = 0
 -- constant amount by which phasetime increases
 frame_time_decrease = 0.0333
+-- keeps time of intermission
+static_timer = 0
+-- duration intermission
+static_duration = 0.5
+
+is_intermission = false
 
 --//sound//
 -- time left until channel changes
@@ -75,6 +81,10 @@ function update_end_screen()
 end
 
 function button_press_check()
+	if is_intermission then
+		return
+	end
+
 	for i = 0, 5 do
 		if button_down_main[i + 1] == false then
 			if btn(i) then
@@ -91,30 +101,44 @@ function button_press_check()
 end
 
 function update_phase_timer()
-	phase_time += frame_time_decrease
-	current_max_time = base_max_time + game_time_variation
+	if is_intermission then
+		static_timer += frame_time_decrease
+		if (static_timer >= static_duration) then
+			is_intermission = false
+			static_timer = 0
 
-	if (phase_time >= current_max_time) then
-		phase_time = 0
-		next_beep = 0
-		time_when_game_changes = time()
-		increment_channel()
-	end
+			phase_time = 0
+			next_beep = 0
+			time_when_game_changes = time()
+			increment_channel()
+		end
+	else
+		phase_time += frame_time_decrease
+		current_max_time = base_max_time + game_time_variation
+		if (phase_time >= current_max_time) then
+			is_intermission = true
+			music(-1)
+			sfx(12)
 
-	-- sound beep logic
-	local time_elapsed = time() - time_when_game_changes
-	time_left = max(0, current_max_time - time_elapsed)
+			phase_time = 0
+			next_beep = 0
+		end
 
-	-- goes from 0 to 1
-	local progress = 1 - (time_left / current_max_time)
+		-- sound beep logic
+		local time_elapsed = time() - time_when_game_changes
+		time_left = max(0, current_max_time - time_elapsed)
 
-	-- interpolate delay so beeps speed up toward end
-	local delay = base_delay - (base_delay - min_delay) * progress
+		-- goes from 0 to 1
+		local progress = 1 - (time_left / current_max_time)
 
-	if time_elapsed >= next_beep then
-		-- play your sound effect (change to your SFX index)
-		sfx(0)
-		next_beep = time_elapsed + delay
+		-- interpolate delay so beeps speed up toward end
+		local delay = base_delay - (base_delay - min_delay) * progress
+
+		if time_elapsed >= next_beep then
+			-- play your sound effect (change to your SFX index)
+			sfx(0)
+			next_beep = time_elapsed + delay
+		end
 	end
 end
 
@@ -141,6 +165,29 @@ end
 function draw_phase_timer()
 	rectfill(cam.x + 13, cam.y + 3, cam.x + 115, cam.y + 7, 1)
 	rectfill(cam.x + 14, cam.y + 4, cam.x + 14 + (phase_time / current_max_time) * 100, cam.y + 6, 7)
+end
+
+function draw_static()
+	if is_intermission then
+		cls(0)
+		for y = 1, 40 do
+			for x = 1, 40 do
+				local pxl_clr = 0
+				local random_nmbr = flr(rnd(4))
+				if random_nmbr == 0 then
+					pxl_clr = 5
+				elseif random_nmbr == 1 then
+					pxl_clr = 6
+				elseif random_nmbr == 2 then
+					pxl_clr = 7
+				end
+				
+				local pos_x = cam.x + x * 3
+				local pos_y = cam.y + y * 3
+				rectfill(pos_x, pos_y, pos_x + 3, pos_y + 3, pxl_clr)
+			end
+		end
+	end
 end
 
 function draw_end_screen()

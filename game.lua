@@ -48,6 +48,7 @@ function _draw()
 		draw_runner()
 	end
 
+	draw_static()
 	draw_tv()
 	draw_phase_timer()
 end
