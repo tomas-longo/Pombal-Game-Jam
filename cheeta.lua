@@ -90,6 +90,6 @@ function draw_cheeta()
 	if game_won then
 		print("fastest man alive!", cam.x + 25, cam.y + 30, 7)
 	else
-		print("spam ➡️", cam.x + 30, cam.y + 30, 7)
+		print("mash ➡️", cam.x + 30, cam.y + 30, 7)
 	end
 end

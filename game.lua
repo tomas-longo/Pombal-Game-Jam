@@ -1,3 +1,6 @@
+-- zip zap tv
+-- for the art & play 2025 jam 
+
 #include main_logic.lua
 #include emplastro.lua
 #include cheeta.lua
