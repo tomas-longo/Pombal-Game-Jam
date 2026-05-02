@@ -1,16 +1,9 @@
-win_runner = false
-
 input_right = false
 runner_frame = 0
-pointer_speed = 6
+
 -- direction in which the pointer moves
 pointer_direction = 1
 half_pointer_size = 4
--- gets increased in case of penalty
-pointer_delay = 0.0
-
-left_down = false
-right_down = false
 
 cam_runner_x = 256
 cam_runner_y = 0
@@ -19,14 +12,8 @@ cam_runner_y = 0
 sweet_spot = { l = cam_runner_x + 53, r = cam_runner_x + 73 }
 meter_extremes = { l = cam_runner_x + 23, r = cam_runner_x + 103 }
 
-finish_line = { x = cam_runner_x + 85, y = cam_runner_y + 70 }
-pointer = { x = cam_runner_x + 27, y = cam_runner_y + 89 }
-runner = { x = cam_runner_x + 30, y = cam_runner_y + 70 }
-
 function check_runner_input(in_right)
-	-- wrong input stops pointer for 1 second
 	if input_right != in_right then
-		pointer_delay = 1
 		return
 	end
 
@@ -40,12 +27,24 @@ function check_runner_input(in_right)
 			runner_frame = 0
 		end
 	else
+		-- wrong input stops pointer for 1 second
 		pointer_delay = 1
 	end
 end
 
 function init_runner()
-	-- in case it's needed
+	win_runner = false
+	pointer_speed = 6
+
+	-- gets increased in case of penalty
+	pointer_delay = 0.0
+
+	left_down = false
+	right_down = false
+
+	finish_line = { x = cam_runner_x + 85, y = cam_runner_y + 70 }
+	pointer = { x = cam_runner_x + 27, y = cam_runner_y + 89 }
+	runner = { x = cam_runner_x + 30, y = cam_runner_y + 70 }
 end
 
 function on_runner_increment()
@@ -98,7 +97,7 @@ function update_runner()
 		pointer_delay = 0
 		pointer.x += pointer_speed * pointer_direction
 	end
-	
+
 	-- win condition
 	if finish_line.x <= runner.x then
 		pointer_speed = 0

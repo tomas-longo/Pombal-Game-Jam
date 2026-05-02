@@ -1,16 +1,14 @@
-camera_speed = 0
-cheeta_char = { posx = 0, posy = 0, vel = 0, frame = 0, timer = 0, animspeed = 0 }
-
-cheeta_initial_mltplr = 10
-cheeta_mltplr = 0
-
-cam_cache = 0
-
-button_down = false
-game_won = false
-
 function init_cheeta()
+	camera_speed = 0
+
+	cheeta_initial_mltplr = 10
 	cheeta_mltplr = cheeta_initial_mltplr
+
+	cam_cache = 0
+
+	button_down = false
+	game_won = false
+
 	cheeta_char = { posx = 0 + 20, posy = 128 + 70, vel = 0, frame = 0, timer = 0, animspeed = 0.07 }
 end
 
@@ -36,7 +34,7 @@ function update_cheeta()
 
 				-- goes from 0 to 1
 				local input_mltplr = (1 - (cheeta_mltplr / cheeta_initial_mltplr))
-				camera_speed += (0.22 * input_mltplr) 
+				camera_speed += (0.22 * input_mltplr)
 			end
 		else
 			if not btn(1) then
@@ -81,7 +79,7 @@ function draw_cheeta()
 	rectfill(cam.x, cam.y, cam.x + 128, cam.y + 50, 9)
 
 	-- draw sun
-	spr(113,cam.x + 95, cam.y + 22)
+	spr(113, cam.x + 95, cam.y + 22)
 
 	spr(
 		101 + cheeta_char.frame, -- frame index

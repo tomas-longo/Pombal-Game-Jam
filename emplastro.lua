@@ -1,28 +1,5 @@
-boards = {}
-boardvelocity = 1
-board_max_y = 85
-board_min_y = 60
-
-anim_speed = 0.1
-anim_counter = 1
-
-reporter_accel = 0.4
-reporter_friction = 0.92
-
-emplastro_accel = 0.3
-emplastro_friction = 0.9
-
-emplastro_progress = 0
-emplastro_progress_speed = 0.005
-
-emplastro_character = { x = cam.x + 64, y = cam.y + 80, vx = 0, vy = 0, f = 1, d = 1 }
-reporter_character = { x = cam.x, y = cam.y + 64, vx = 0, vy = 0, d = 1 }
-airplane = { x = cam.x, y = cam.y + 30, v = 0.1 }
-
-win_emplastro = false
-
 function make_board(x, y, w, h, dir, text)
-	a = {
+	local board = {
 		x = x,
 		y = y,
 		w = w,
@@ -31,7 +8,7 @@ function make_board(x, y, w, h, dir, text)
 		text = text
 	}
 
-	add(boards, a)
+	add(boards, board)
 end
 
 function draw_flame(sprite, anim_multiplier, flame_x, flame_y)
@@ -51,6 +28,29 @@ function draw_boards()
 end
 
 function init_emplastro()
+	boards = {}
+	boardvelocity = 1
+	board_max_y = 85
+	board_min_y = 60
+
+	anim_speed = 0.1
+	anim_counter = 1
+
+	reporter_accel = 0.4
+	reporter_friction = 0.92
+
+	emplastro_accel = 0.3
+	emplastro_friction = 0.9
+
+	emplastro_progress = 0
+	emplastro_progress_speed = 0.005
+
+	emplastro_character = { x = cam.x + 64, y = cam.y + 80, vx = 0, vy = 0, f = 1, d = 1 }
+	reporter_character = { x = cam.x, y = cam.y + 64, vx = 0, vy = 0, d = 1 }
+	airplane = { x = cam.x, y = cam.y + 30, v = 0.1 }
+
+	win_emplastro = false
+
 	make_board(23, 70, 10, 5, 1, "😐⌂")
 	make_board(42, 50, 15, 7, 1, "fim fmi")
 end

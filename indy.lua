@@ -1,31 +1,15 @@
 -- stores first puzzle sprite of each row - 1
 puzzle_sprites = { 74, 90, 106, 122 }
 indy_sprites = { 65, 66 }
-indy_anim_index = 1
 
 cam_pos_puzzle_x = 128
 cam_pos_puzzle_y = 0
-
-x_puzzle_offset = 70
-y_puzzle_offset = 48
-
-is_random = false
-random_timer = 1
 
 piece_draw_offset = 9
 piece_size = 8
 -- side of the square
 piece_grid_side = 4
-inbetween_piece_distance = 0
-
--- [0-piece_grid_side[ grid coordinate that is currently selected
-x_selection = 0
-y_selection = 0
-
--- 2d array.
--- values: 0=NoFlipping, 1=HFlipping, 2=VFlipping, 3=BothFlipping
-puzzle_flip_state = {}
-puzzle_completed = false
+inbetween_piece_distance = piece_draw_offset - piece_size
 
 function check_puzzle_win_state()
 	for x = 1, piece_grid_side do
@@ -99,10 +83,21 @@ function randomize_puzzle()
 end
 
 function init_indy()
-	x_puzzle_offset += cam_pos_puzzle_x
-	y_puzzle_offset += cam_pos_puzzle_y
+	is_random = false
+	random_timer = 1
+	indy_anim_index = 1
 
-	inbetween_piece_distance = piece_draw_offset - piece_size
+	-- [0-piece_grid_side[ grid coordinate that is currently selected
+	x_selection = 0
+	y_selection = 0
+
+	-- 2d array.
+	-- values: 0=NoFlipping, 1=HFlipping, 2=VFlipping, 3=BothFlipping
+	puzzle_flip_state = {}
+	puzzle_completed = false
+
+	x_puzzle_offset = 70 + cam_pos_puzzle_x
+	y_puzzle_offset = 48 + cam_pos_puzzle_y
 
 	-- setup puzzle to be randomized later
 	for x = 1, piece_grid_side do

@@ -8,15 +8,18 @@ __lua__
 #include runner.lua
 
 function _init()
+	init_main_logic()
 	init_emplastro()
 	init_cheeta()
 	init_indy()
 	init_runner()
-
-	on_channel_update()
 end
 
 function _update()
+	if update_start_screen() then
+		return
+	end
+
 	if update_end_screen() then
 		return
 	end
@@ -37,6 +40,10 @@ function _update()
 end
 
 function _draw()
+	if draw_start_screen() then
+		return
+	end
+
 	if draw_end_screen() then
 		return
 	end

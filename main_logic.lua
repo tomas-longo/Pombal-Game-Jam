@@ -1,50 +1,60 @@
---//camera//
--- gets changed by each game as needed
+-- camera gets changed by each game as needed
 cam = { x = 0, y = 0 }
 
---//timer//
--- baseline that gets decreased on channel increment
-base_max_time = 6.0
--- current max time for current game
-current_max_time = base_max_time
--- set by each game to add time to currentmaxtime
-game_time_variation = 0
--- once it reaches currentmaxtime it gets reset
-phase_time = 0
 -- constant amount by which phasetime increases
 frame_time_decrease = 0.0333
--- keeps time of intermission
-static_timer = 0
+
 -- duration intermission
 static_duration = 0.5
-
-is_intermission = false
-
---//sound//
--- time left until channel changes
-time_left = base_max_time
--- base delay (in seconds) between timer sfx plays
-base_delay = 0.5
--- how fast it can go at the end
-min_delay = 0.1
--- timestamp increased by shorter and shorter delays
-next_beep = 0
--- cached timestamp from when channel last changed
-time_when_game_changes = 0
 
 -- keeps track of button states for adequate sfx playback
 button_down_main = { false, false, false, false, false, false }
 
-current_channel_index = 0
 channel_ammount = 4
 
--- one bool for each game
-game1_completed = false
-game2_completed = false
-game3_completed = false
-game4_completed = false
+run_menu_delay = false
 
 end_game = false
+start_screen = true
+
+function init_main_logic()
+	-- one bool for each game
+	game1_completed = false
+	game2_completed = false
+	game3_completed = false
+	game4_completed = false
+
+	-- keeps track of forced delay between end and start screens
+	menu_press_timer = 0
+
+	current_channel_index = 0
+
+	--//timer//
+	-- baseline that gets decreased on channel increment
+	base_max_time = 6.0
+	-- current max time for current game
+	current_max_time = base_max_time
+	-- set by each game to add time to currentmaxtime
+	game_time_variation = 0
+	-- once it reaches currentmaxtime it gets reset
+	phase_time = 0
+
+	-- keeps time of intermission
+	static_timer = 0
+	is_intermission = false
+
+	--//sound//
+	-- time left until channel changes
+	time_left = base_max_time
+	-- base delay (in seconds) between timer sfx plays
+	base_delay = 0.5
+	-- how fast it can go at the end
+	min_delay = 0.1
+	-- timestamp increased by shorter and shorter delays
+	next_beep = 0
+	-- cached timestamp from when channel last changed
+	time_when_game_changes = time()
+end
 
 function increment_channel()
 	current_channel_index = current_channel_index + 1
@@ -76,8 +86,41 @@ function on_channel_update()
 end
 
 function update_end_screen()
-	-- function in case extra logic is needed
+	if end_game then
+		if btn(🅾️) and btn(❎) then
+			start_screen = true
+			end_game = false
+			run_menu_delay = true
+
+			music(-1)
+
+			init_main_logic()
+			init_emplastro()
+			init_cheeta()
+			init_indy()
+			init_runner()
+		end
+	end
 	return end_game
+end
+
+function update_start_screen()
+	if start_screen then
+		if run_menu_delay then
+			menu_press_timer += frame_time_decrease
+			if (menu_press_timer >= 1.0) then
+				menu_press_timer = 0
+				run_menu_delay = false
+			end
+		else
+			if btn(🅾️) and btn(❎) then
+				start_screen = false
+				on_channel_update()
+				time_when_game_changes = time()
+			end
+		end
+	end
+	return start_screen
 end
 
 function button_press_check()
@@ -181,7 +224,7 @@ function draw_static()
 				elseif random_nmbr == 2 then
 					pxl_clr = 7
 				end
-				
+
 				local pos_x = cam.x + x * 3
 				local pos_y = cam.y + y * 3
 				rectfill(pos_x, pos_y, pos_x + 3, pos_y + 3, pxl_clr)
@@ -190,23 +233,42 @@ function draw_static()
 	end
 end
 
+function draw_start_screen()
+	if start_screen then
+		camera(0, 0)
+		map()
+		cls(0)
+
+		print("press 🅾️ and ❎ to start", 17, 60, 14)
+		draw_tv()
+	end
+
+	return start_screen
+end
+
 function draw_end_screen()
 	if end_game then
 		camera(0, 0)
 		map()
 		cls(0)
-		rectfill(0, 0, 128, 128, 0)
 
 		end_string_1 = "oops. amused yourself"
 		end_string_2 = "to death :/"
+		end_string_3 = ""
 
 		if game1_completed and game2_completed and game3_completed and game4_completed then
-			end_string_1 = "congrats! maybe that's enough"
-			end_string_2 = " media for today though."
+			end_string_1 = "congrats! maybe that's"
+			end_string_2 = "enough media for today"
+			end_string_3 = "though."
 		end
 
-		print(end_string_1, 10, 10, 7)
-		print(end_string_2, 10, 20, 7)
+		print(end_string_1, 17, 20, 7)
+		print(end_string_2, 17, 30, 7)
+		print(end_string_3, 17, 40, 7)
+
+		print("press 🅾️ and ❎ to retry", 17, 60, 14)
+
+		draw_tv()
 	end
 
 	return end_game
