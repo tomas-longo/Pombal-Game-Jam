@@ -13,11 +13,11 @@ sweet_spot = { l = cam_runner_x + 53, r = cam_runner_x + 73 }
 meter_extremes = { l = cam_runner_x + 23, r = cam_runner_x + 103 }
 
 function check_runner_input(in_right)
-	if input_right != in_right then
-		return
-	end
-
 	if pointer.x >= sweet_spot.l - half_pointer_size and pointer.x <= sweet_spot.r - half_pointer_size then
+		if input_right != in_right then
+			return
+		end
+
 		finish_line.x -= 2
 		input_right = flr(rnd(2)) == 0
 
